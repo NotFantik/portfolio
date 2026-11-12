@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --fg: #EDEDED;
+    --muted: #7A7A76;
+    --line: #1E1E1E;
+    --card: #111111;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(10,10,10,.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-in { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-weight: 500; text-decoration: none; color: var(--fg); font-size: 14px; font-family: 'JetBrains Mono', monospace; }
+  nav { display: flex; gap: 24px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+  nav a:hover { color: var(--fg); }
+
+  .hero { padding: 130px 0 110px; }
+  .hero h1 {
+    font-size: clamp(34px, 5.5vw, 56px);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+  .hero p { margin-top: 24px; max-width: 480px; color: var(--muted); font-size: 16px; }
+  .hero .nav-links { margin-top: 36px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .hero .nav-links a { color: var(--fg); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--muted); padding-bottom: 2px; transition: border-color .2s, color .2s; }
+  .hero .nav-links a:hover { border-color: var(--fg); }
+
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 32px;
+  }
+  h2 { font-size: 22px; letter-spacing: -0.01em; font-weight: 600; margin-bottom: 20px; }
+
+  .about-text { color: var(--muted); font-size: 16px; max-width: 560px; }
+  .about-text strong { color: var(--fg); font-weight: 500; }
+
+  .row-list { display: grid; }
+  .row {
+    display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 20px; align-items: baseline;
+    padding: 20px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none; color: var(--fg);
+    transition: background .2s;
+  }
+  .row:first-child { border-top: 1px solid var(--line); }
+  .row:hover { background: var(--card); }
+  .row h3 { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+  .row p { color: var(--muted); font-size: 13px; }
+  .row .meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  @media (max-width: 600px) {
+    .row { grid-template-columns: 1fr; gap: 6px; }
+    .row .meta { order: -1; }
+  }
+
+  .skills { display: flex; flex-wrap: wrap; gap: 4px 0; max-width: 620px; font-size: 14px; color: var(--muted); }
+  .skills span { white-space: nowrap; }
+  .skills span::after { content: '/'; margin: 0 10px; color: var(--line); }
+  .skills span:last-child::after { content: ''; margin: 0; }
+  .skills-note { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+  .contact-list { display: grid; max-width: 420px; }
+  .contact {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+    text-decoration: none; color: var(--fg); font-size: 14px;
+    transition: padding-left .2s, color .2s;
+  }
+  .contact:first-child { border-top: 1px solid var(--line); }
+  .contact:hover { padding-left: 8px; }
+  .contact .val { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .contact:hover .val { color: var(--fg); }
+
+  footer { padding: 40px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--fg); }
+
+  /* фоновая сетка, затухает к низу как на systemdlc */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 100% 55% at 50% 0%, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 55% at 50% 0%, black 0%, transparent 75%);
+  }
+  main, header, footer { position: relative; z-index: 1; }
+
+  /* hero появляется при загрузке */
+  .hero > * { opacity: 0; transform: translateY(18px); animation: rise .7s cubic-bezier(.2,.7,.3,1) forwards; }
+  .hero h1 { animation-delay: .05s; }
+  .hero p { animation-delay: .15s; }
+  .hero .nav-links { animation-delay: .25s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* строки проектов — каскад */
+  .row.reveal, .contact.reveal { transition: opacity .55s ease, transform .55s cubic-bezier(.2,.7,.3,1), background .2s, padding-left .2s, color .2s; }
+
+  /* hover строки проектов: сдвиг стрелки */
+  .row::after { content: '→'; color: var(--muted); font-size: 14px; opacity: 0; transform: translateX(-8px); transition: opacity .25s, transform .3s cubic-bezier(.2,.7,.3,1); }
+  .row:hover::after { opacity: 1; transform: none; }
+  .row:hover h3 { color: var(--fg); }
+
+  /* навигация — underline */
+  nav a { position: relative; }
+  nav a::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--fg); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.2,.7,.3,1); }
+  nav a:hover::after { transform: scaleX(1); }
+
+  /* hero-заголовок: лёгкое движение от мыши */
+  .hero h1 { will-change: transform; transition: transform .3s ease-out; }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+    .grid-bg { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header>
+  <div class="wrap header-in">
+    <a class="logo" href="#top">~/portfolio</a>
+    <nav>
+      <a href="#about">Обо мне</a>
+      <a href="#projects">Проекты</a>
+      <a href="#skills">Навыки</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+  <div class="hero">
+    <h1>Разработчик.<br>Десктоп, автоматизация,<br>инструменты.</h1>
+    <p>Пишу на C#, C++ и Python. Делаю утилиты, автоматизацию и системный tooling — от идеи до работающей программы.</p>
+    <div class="nav-links">
+      <a href="#projects">Проекты ↓</a>
+      <a href="#contact">Связаться</a>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="label">01 / Обо мне</div>
+    <p class="about-text reveal">
+      Работаю с 2025 года. Люблю задачи, где нужно разобрать систему до винтиков: от нативного кода
+      и низкоуровневых инструментов до приложений с интерфейсом.
+      Принцип простой: <strong>инструмент должен работать, а не выглядеть работающим</strong>.
+    </p>
+  </section>
+
+  <section id="projects">
+    <div class="label">02 / Проекты</div>
+    <div class="row-list">
+      <a class="row reveal" href="https://github.com/NotFantik" target="_blank" rel="noopener">
+        <h3>AccChecker</h3>
+        <p>Проверка аккаунтов: встроенный браузер, Cloudflare, парсинг кабинетов, логи</p>
+        <span class="meta">C# · WPF · WebView2</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="label">03 / Навыки</div>
+    <div class="skills reveal">
+      <span>C# / .NET</span><span>C / C++</span><span>Python</span><span>WPF</span><span>WinAPI</span><span>Node.js</span><span>SQL</span><span>Git</span><span>Reverse engineering</span><span>Сети</span>
+    </div>
+    <p class="skills-note reveal">Уровень по каждому стеку разный — расскажу честно на собеседовании.</p>
+  </section>
+
+  <section id="contact">
+    <div class="label">04 / Контакты</div>
+    <div class="contact-list">
+      <a class="contact reveal" href="https://t.me/notfantiks" target="_blank" rel="noopener">
+        <span>Telegram</span><span class="val">@notfantiks</span>
+      </a>
+      <a class="contact reveal" href="https://github.com/NotFantik" target="_blank" rel="noopener">
+        <span>GitHub</span><span class="val">github.com/NotFantik</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026</span>
+    <a href="#top">Наверх</a>
+  </footer>
+
+</main>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // каскадная задержка для строк списков
+  document.querySelectorAll('.row-list, .contact-list').forEach(list => {
+    [...list.children].forEach((el, i) => el.style.transitionDelay = (i * 60) + 'ms');
+  });
+
+  // заголовок чуть уплывает за курсором
+  const h1 = document.querySelector('.hero h1');
+  if (h1 && !matchMedia('(pointer: coarse)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let h1Live = false;
+    addEventListener('pointermove', e => {
+      if (!h1Live) { h1.style.animation = 'none'; h1.style.opacity = 1; h1Live = true; }
+      const dx = e.clientX / innerWidth - 0.5, dy = e.clientY / innerHeight - 0.5;
+      h1.style.transform = `translate(${dx * 8}px, ${dy * 5}px)`;
+    }, { passive: true });
+  }
+</script>
+
+</body>
+</html>
